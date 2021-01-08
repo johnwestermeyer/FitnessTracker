@@ -21,10 +21,21 @@ module.exports = function(app) {
         });
       });
     app.post("/api/workouts", function(req, res) {
-      db.Workout.findOne(req.body).then(function(dbWork) {
+      db.Workout.find().then(function(dbWork) {
         res.json(dbWork);
       });
     });
+    app.put("/api/workouts/:id", function(req,res){
+      console.log(req.body);
+      db.Workout.create({exercises: {
+        type: req.body.type,
+        name: req.body.name,
+        distance: req.body.distance,
+        duration: req.body.duration
+      }}).then(function(dbWork) {
+        res.json(dbWork);
+      });
+    })
 
     app.get("/api/workouts/range", function(req, res) {
       db.Workout.find({}).then(function(dbWork) {

@@ -8,15 +8,11 @@ const WorkoutSchema = new Schema({
         default: Date.now
     },
     exercises: [{
-        type: String,
         name: {
-            type: String,
-            trim: true,
-            required: "Workout Name is Required"
+            type: String
         },
         duration: {
-            type: Number,
-            reqired: "Duration is Required"
+            type: Number
         },
         weight: {
             type: Number
