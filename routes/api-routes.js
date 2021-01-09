@@ -15,15 +15,20 @@ module.exports = function(app) {
       });
     });
     app.get("/api/workouts/range", (req, res) => {
-     db.Workout.aggregate([
+      db.Workout.aggregate([
         {
             $addFields: {
                 totalDuration: {
                     $sum: "$exercises.duration"
                 }
             }
-        }]).then(function(dbWork) {
-        res.json(dbWork);
+        }])
+      .limit(7)
+      .then(dbWorkout => {
+        res.json(dbWorkout);
+      })
+      .catch(err => {
+        res.json(err);
       });
     });
 
