@@ -2,8 +2,20 @@ const db = require("../models");
 const mongoose = require("mongoose");
 
 module.exports = function(app) {
-    app.get("/api/workouts",async (req, res) => {
+    app.get("/api/workouts", (req, res) => {
       db.Workout.aggregate([
+        {
+            $addFields: {
+                totalDuration: {
+                    $sum: "$exercises.duration"
+                }
+            }
+        }]).then(function(dbWork) {
+        res.json(dbWork);
+      });
+    });
+    app.get("/api/workouts/range", (req, res) => {
+     db.Workout.aggregate([
         {
             $addFields: {
                 totalDuration: {
@@ -35,12 +47,6 @@ module.exports = function(app) {
       }}).then(function(dbWork) {
         res.json(dbWork);
       });
-    })
-
-    app.get("/api/workouts/range", function(req, res) {
-      db.Workout.find({}).then(function(dbWork) {
-        res.json(dbWork);
-      });
-    });
+    });    
     
 }
